@@ -6,4 +6,5 @@
 #include <string.h>
 
 int prompt(void);
+char **split_fname(char *path);
 #endif
