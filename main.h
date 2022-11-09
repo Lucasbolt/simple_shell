@@ -11,9 +11,10 @@
 
 int prompt(void);
 int search(char *path);
-int dirtest(char *dir, char *file);
+int dirtest(char *dir, char *file, int errno);
 int check(char *file1, char *file2);
 char *mygetc(void);
 int checkWord(char *command);
 int startProcess(char *command, char **args);
+int pathCheck(char *command);
 #endif

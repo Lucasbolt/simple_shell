@@ -89,6 +89,10 @@ int prompt(void)
 		chek = checkWord(command);
 		if (chek == 1)
 			ret = search(command);
+
+		if (chek == 0)
+			pathCheck(command);
+
 		if (ret == 0)
 		{
 			arg[0] = command;

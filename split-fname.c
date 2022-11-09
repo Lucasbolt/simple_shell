@@ -29,9 +29,10 @@ int check(char *file1, char *file2)
  * dirtest - checks if @file exist in a @dir
  * @dir: directory to check for file
  * @file: file to look for
+ * @errno: 1 to show error, 0 for otherwise
  * Return: 0 on success; 1 on failure.
  */
-int dirtest(char *dir, char *file)
+int dirtest(char *dir, char *file, int errno)
 {
 	struct dirent *pDirent;
 	DIR *pDir;
@@ -40,7 +41,8 @@ int dirtest(char *dir, char *file)
 	pDir = opendir(dir);
 	if (pDir == NULL)
 	{
-		printf("Cannot open directory %s\n", dir);
+		if (errno == 1)
+			printf("Cannot open directory %s\n", dir);
 		return (1);
 	}
 
@@ -53,7 +55,8 @@ int dirtest(char *dir, char *file)
 			return (0);
 		}
 	}
-	printf("./shell: No such file or directory\n");
+	if (errno == 1)
+		printf("./shell: No such file or directory\n");
 	closedir(pDir);
 	return (1);
 }
@@ -95,7 +98,7 @@ int search(char *path)
 		count++;
 	}
 	file[count] = '\0';
-	ret = dirtest(vpath, file);
+	ret = dirtest(vpath, file, 1);
 	free(file);
 	free(vpath);
 	return (ret);
