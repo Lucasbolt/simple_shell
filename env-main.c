@@ -4,12 +4,11 @@
  * main - main exec file
  * Return: 0
  */
-int main(void)
-{	
-	char **tuple;
-
-	tuple = search("/bin/ls");
-	printf("File = %s\ndir = %s\n", tuple[1], tuple[0]);
-	dirtest("/bin/", "clear");
+int main(int argc, char **argv)
+{
+	if (argc > 1)
+		puts(argv[1]);
+	else
+		prompt();
 	return (0);
 }

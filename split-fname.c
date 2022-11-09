@@ -1,18 +1,77 @@
 #include "main.h"
 
 /**
- * search - checks if a file exists
- * Return: tuple[0] = dir
- *			tuple[1] = file
+ * check - checks if @file1 == @file2
+ * @file1: file 1
+ * @file2: file2
+ * Return: 1 on failure; 0 on success
  */
-char **search(char *path)
+int check(char *file1, char *file2)
 {
-	int count = 0, index = 0, diff, hold;
-	char *file, *vpath, **tuple[2];
+	int index1 = 0, index2 = 0;
+
+	if (strlen(file1) != (strlen(file2)))
+		return (1);
+
+	while (file1[index1] && file2[index2])
+	{
+		if (file1[index1] != file2[index2])
+			return (1);
+		index1++;
+		index2++;
+	}
+
+	return (0);
+
+}
+
+/**
+ * dirtest - checks if @file exist in a @dir
+ * @dir: directory to check for file
+ * @file: file to look for
+ * Return: 0 on success; 1 on failure.
+ */
+int dirtest(char *dir, char *file)
+{
+	struct dirent *pDirent;
+	DIR *pDir;
+	int res;
+
+	pDir = opendir(dir);
+	if (pDir == NULL)
+	{
+		printf("Cannot open directory %s\n", dir);
+		return (1);
+	}
+
+	while ((pDirent = readdir(pDir)) != NULL)
+	{
+		res = check(pDirent->d_name, file);
+		if (res == 0)
+		{
+			closedir(pDir);
+			return (0);
+		}
+	}
+	printf("./shell: No such file or directory\n");
+	closedir(pDir);
+	return (1);
+}
+
+
+/**
+ * search - checks if a file exists
+ * Return: @ret i.e return value of func dirtest
+ */
+int search(char *path)
+{
+	int count = 0, index = 0, diff, hold, ret;
+	char *file, *vpath;
 
 	if (path == NULL)
 		exit(-1);
-
+	if (path[0] == '\n' || path[0] == '\0')
+		return (-1);
 	while (path[count] != '\0')
 		count += 1;
 
@@ -35,7 +94,9 @@ char **search(char *path)
 		file[count] = path[diff];
 		count++;
 	}
-	tuple[0] = &vpath;
-	tuple[1] = &file;
-	return (*tuple);
+	file[count] = '\0';
+	ret = dirtest(vpath, file);
+	free(file);
+	free(vpath);
+	return (ret);
 }
