@@ -34,7 +34,7 @@ int checkWord(char *command)
 
 	if (command == NULL || command[0] == '\0')
 		return (-1);
-	
+
 	while (command[index] != '\0')
 	{
 		if (command[index] == '/')
@@ -44,8 +44,7 @@ int checkWord(char *command)
 	return (0);
 }
 /**
- * myget - reads characters from stdin
- * @command: blocks to read char into
+ * mygetc - reads characters from stdin
  * Return: returns the read @command
  */
 char *mygetc(void)

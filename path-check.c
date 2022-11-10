@@ -2,7 +2,7 @@
 
 /**
  * pathCheck - checks for command in PATH
- * @comman: command to check for
+ * @command: command to check for
  * Description: if command is found, it is executed
  *				and 0 is returned.
  * Return: 0 on success, 1 on failure
@@ -12,7 +12,7 @@ int pathCheck(char *command)
 	int index = 0, ret;
 	char *args[2];
 	char *PATH[22] = {
-					"/usr/local/bin/", "/usr/bin/", "/bin/", "/usr/local/games/", 
+					"/usr/local/bin/", "/usr/bin/", "/bin/", "/usr/local/games/",
 					"/usr/games/", "/usr/share/games/", "/usr/local/sbin/",
 					"/usr/sbin/", "/sbin/", "/home/lucasbolt/.local/bin/",
 					"/snap/bin/", NULL
@@ -21,7 +21,7 @@ int pathCheck(char *command)
 	while (PATH[index] != NULL)
 	{
 		ret = dirtest(PATH[index], command, 0);
-		
+
 		if (ret == 0)
 		{
 			args[0] = command;

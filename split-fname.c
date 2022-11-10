@@ -64,6 +64,7 @@ int dirtest(char *dir, char *file, int errno)
 
 /**
  * search - checks if a file exists
+ * @path: path to file
  * Return: @ret i.e return value of func dirtest
  */
 int search(char *path)
@@ -79,7 +80,7 @@ int search(char *path)
 		count += 1;
 
 	hold = count--;
-	
+
 	for (; path[count] != '/'; count--)
 		index++;
 	file = malloc(sizeof(char) * (index + 1));
@@ -87,7 +88,7 @@ int search(char *path)
 	diff = hold - index;
 
 	vpath = malloc(sizeof(char) * diff);
-	
+
 	for (count = 0; count < diff; count++)
 	{
 		vpath[count] = path[count];

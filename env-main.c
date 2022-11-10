@@ -2,6 +2,8 @@
 
 /**
  * main - main exec file
+ * @argc: arg count
+ * @argv: argument array
  * Return: 0
  */
 int main(int argc, char **argv)
