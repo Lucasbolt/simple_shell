@@ -1,29 +1,6 @@
 #include "main.h"
 
 /**
- * startProcess - forks a process
- * @command: command to execute
- * @args: arguments
- * Return: 0 on success
- */
-int startProcess(char *command, char **args)
-{
-	pid_t pid;
-
-	pid = fork();
-
-	if (pid < 0)
-		return (1);
-	else if (pid == 0)
-		execvp(command, args);
-	else
-	{
-		wait(NULL);
-	}
-	return (0);
-}
-
-/**
  * checkWord - check if command is a directorty or word
  * @command: command to check
  * Return: 1 if directory, 0 if word
@@ -47,16 +24,21 @@ int checkWord(char *command)
  * mygetc - reads characters from stdin
  * Return: returns the read @command
  */
-char *mygetc(void)
+char *mygetc()
 {
-	char *command = malloc(sizeof(char) * 1024);
+	char *command = malloc(sizeof(char) * 2048);
 	int index = 0;
 	char n;
 
-	while ((n = getc(stdin)) != '\n')
+	while (1)
 	{
+		n = getc(stdin);
 		if (n == EOF)
-			exit(-1);
+		{
+			free(command);
+			free_env();
+			return (NULL);
+		}
 
 		if (n == '\n')
 		{
@@ -74,31 +56,51 @@ char *mygetc(void)
  * Description: it waits for commands to be entered
  * Return: returns 0 on exit
  */
-int prompt(void)
+int prompt(char **path)
 {
-	char *arg[2];
-	char *command;
-	int ret = 2, chek;
+	char **command, *tmp, *input, **front;
+	int ret = 2, chek, count, out;
+	char *message = "($) ";
 
 	while (1)
 	{
-		printf("($) ");
+		write(STDOUT_FILENO, message, strlen(message));
+		input = mygetc();
 
-		command = mygetc();
-		chek = checkWord(command);
+		if ((strlen(input) == 0))
+		{
+			free(input);
+			continue;
+		}
+		if (!input)
+		{
+			free(input);
+			return (END);
+		}
+		out = mexit(input);
+		if (out == EXIT)
+			return (out);
+		tmp = modifier(input);
+		free(input);
+		count = delim_count(tmp);
+		command = splitit(tmp, count);
+		front = command;
+		chek = checkWord(command[0]);
+
 		if (chek == 1)
-			ret = search(command);
+			ret = search(command[0]);
 
 		if (chek == 0)
-			pathCheck(command);
+			pathCheck(command, path, front);
 
-		if (ret == 0)
+		switch (ret)
 		{
-			arg[0] = command;
-			arg[1] = NULL;
-			startProcess(command, arg);
+			case (0):
+				startProcess(command, front);
+				break;
+			case (1):
+				freemem(command, front);
+				break;
 		}
-		free(command);
-		continue;
 	}
 }

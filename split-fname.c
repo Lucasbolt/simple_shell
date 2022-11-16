@@ -87,12 +87,13 @@ int search(char *path)
 
 	diff = hold - index;
 
-	vpath = malloc(sizeof(char) * diff);
+	vpath = malloc(sizeof(char) * (diff + 1));
 
 	for (count = 0; count < diff; count++)
 	{
 		vpath[count] = path[count];
 	}
+	vpath[count] = '\0';
 	for (count = 0; path[diff]; diff++)
 	{
 		file[count] = path[diff];
