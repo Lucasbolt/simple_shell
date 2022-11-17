@@ -59,48 +59,47 @@ char *mygetc()
 int prompt(char **path)
 {
 	char **command, *tmp, *input, **front;
-	int ret = 2, chek, count, out;
+	int ret = 2, chek, count, out, mret;
 	char *message = "($) ";
 
-	while (1)
+	write(STDOUT_FILENO, message, strlen(message));
+	input = mygetc();
+	if ((strlen(input) == 0))
 	{
-		write(STDOUT_FILENO, message, strlen(message));
-		input = mygetc();
-
-		if ((strlen(input) == 0))
-		{
-			free(input);
-			continue;
-		}
-		if (!input)
-		{
-			free(input);
-			return (END);
-		}
-		out = mexit(input);
-		if (out == EXIT)
-			return (out);
-		tmp = modifier(input);
 		free(input);
-		count = delim_count(tmp);
-		command = splitit(tmp, count);
-		front = command;
-		chek = checkWord(command[0]);
-
-		if (chek == 1)
-			ret = search(command[0]);
-
-		if (chek == 0)
-			pathCheck(command, path, front);
-
-		switch (ret)
-		{
-			case (0):
-				startProcess(command, front);
-				break;
-			case (1):
-				freemem(command, front);
-				break;
-		}
+		return (1);
 	}
+	if (!input)
+	{
+		free(input);
+		return (-2);
+	}
+	out = mexit(input);
+	if (out == EXIT)
+	{
+		free(input);
+		return (out);
+	}
+	tmp = modifier(input);
+	free(input);
+	count = delim_count(tmp);
+	command = splitit(tmp, count);
+	front = command;
+	chek = checkWord(command[0]);
+	if (chek == 1)
+		ret = search(command[0]);
+	if (chek == 0)
+		mret = pathCheck(command, path, front);
+	if  (ret == 0)
+		mret = startProcess(command, front);
+	if  (ret == 1)
+	{
+		freemem(command, front);
+		return (1);
+	}
+	if (front)
+		freemem(command, front);
+	if (mret == -1)
+		return (mret);
+	return (0);
 }

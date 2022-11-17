@@ -4,13 +4,13 @@
  * splitit - splits strings into substrings
  * @string: string to split
  * @words: number of substrings
- * Returns: pointer array to substrings
+ * Return: pointer array to substrings
  */
 char **splitit(char *string, int words)
 {
 	int num = 0, index, index1 = 0, wc = 400;
 	char **tokens;
-	
+
 	if (string == NULL || words <= 0)
 		return (NULL);
 

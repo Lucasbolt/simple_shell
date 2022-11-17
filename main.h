@@ -18,7 +18,7 @@ extern char **environ;
 char **makenv(void);
 int prompt(char **path);
 int search(char *path);
-int dirtest(char *dir, char *file, int errno);
+int dirtest(char *dir, char *file, int er);
 int check(char *file1, char *file2);
 char *mygetc(void);
 int checkWord(char *command);
@@ -35,4 +35,23 @@ char **fetch_env(const char *var);
 int numberPath(char *path);
 int pathProcess(char *dir, char **args, char **front);
 int mexit(char *input);
+int cant_open(char *file_path);
+int pfcom(char **argv, char **path);
+char **newcom(char **argv);
+
+char *get_args(char *line, int *exe_ret);
+int call_args(char **args, char **front, int *exe_ret);
+int run_args(char **args, char **front, int *exe_ret);
+int handle_args(int *exe_ret);
+int check_args(char **args);
+void handle_line(char **line, ssize_t read);
+ssize_t get_new_len(char *line);
+void logical_ops(char *line, ssize_t *new_len);
+char *get_env_value(char *beginning, int len);
+void variable_replacement(char **line, int *exe_ret);
+char *get_pid(void);
+int execute(char **args, char **front);
+
+int nonsense(void);
+
 #endif

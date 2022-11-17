@@ -6,7 +6,8 @@
  * Return: number of dirs in path.
  */
 int numberPath(char *path)
-{	
+{
+
 	int index = 0, num = 0;
 
 	if (path == NULL)
@@ -32,13 +33,15 @@ int numberPath(char *path)
 char **epath(void)
 {
 
-	int index = 5, index1 = 0, num = 0;
+	int index = 5, index1 = 0, num = 0, n;
 	char **PATH;
 	char **path = fetch_env("PATH");
 	int count = numberPath(*path + 5);
 	char *dpath = path[0];
 
-	PATH = malloc(sizeof(char *) * (count + 1));
+	PATH = malloc(sizeof(char *) * (count + 2));
+	for (n = 0; n < (count + 2); n++)
+		PATH[n] = NULL;
 	PATH[num] = malloc(sizeof(char) * 100);
 	while (dpath[index] != '\0')
 	{
@@ -61,6 +64,8 @@ char **epath(void)
 /**
  * pathCheck - checks for command in PATH
  * @command: command to check for
+ * @path: dir
+ * @front: pointer to @command
  * Description: if command is found, it is executed
  *				and 0 is returned.
  * Return: 0 on success, 1 on failure
@@ -91,7 +96,7 @@ int pathCheck(char **command, char **path, char **front)
 			continue;
 		}
 	}
-	freemem(command, front);
+	/*freemem(command, front);*/
 	write(STDERR_FILENO, error, strlen(error));
 	return (1);
 }

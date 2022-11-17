@@ -1,33 +1,40 @@
 #include "main.h"
 
-
-
 /**
  * main - main exec file
  * @argc: arg count
  * @argv: argument array
  * Return: 0
  */
-int main(int argc, char **argv)
+int main(int argc, __attribute__ ((unused)) char *argv[])
 {
+	char **front;
 	char **path = epath();
-	int ret;
+	int ret = 0;
 
-	if (argc > 1)
-		puts(argv[1]);
+	environ = makenv();
+	front = path;
+
+	if (argc != 1)
+	{
+		freemem(path, front);
+		free_env();
+		return (ret);
+	}
 	else
 	{
-		environ = makenv();
-		ret = prompt(path);
-		if (ret == END || ret == EXIT)
+		while (1)
 		{
-			free_env();
-			free(path);
-			write(STDOUT_FILENO, "\n", 1); 
-			exit(ret);
+			ret = prompt(path);
+			if (ret == END || ret == EXIT)
+			{
+				free_env();
+				freemem(path, front);
+				/*write(STDOUT_FILENO, "\n", 1);*/
+				exit(ret);
+			}
 		}
 	}
 	free_env();
-	free(path);
 	return (0);
 }

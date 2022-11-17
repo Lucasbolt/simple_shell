@@ -70,6 +70,6 @@ int mexit(char *input)
 
 	ret = strcmp(input, "exit");
 	if (ret == 0)
-		return (EXIT);
+		return (-3);
 	return (ret);
 }
