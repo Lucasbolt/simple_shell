@@ -19,6 +19,7 @@ char *modifier(char *string)
 			break;
 		index++;
 	}
+	index--;
 	size = strlen(s);
 	size += 2;
 	a = malloc(size * sizeof(char));
